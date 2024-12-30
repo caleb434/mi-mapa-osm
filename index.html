@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>Mapa Interactivo</title>
-    <meta charset="utf-8" />
+    <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mapa Interactivo con Bandera</title>
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.3/dist/leaflet.css" />
     <script src="https://unpkg.com/leaflet@1.9.3/dist/leaflet.js"></script>
     <style>
@@ -16,10 +16,36 @@
 <body>
     <div id="map"></div>
     <script>
-        var map = L.map('map').setView([0, 0], 2); // Coordenadas iniciales (latitud, longitud) y zoom
-        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        // Crear el mapa centrado en las coordenadas de EE. UU.
+        var map = L.map('map').setView([37.0902, -95.7129], 4); // Coordenadas de EE. UU.
+
+        // Cargar las baldosas de OpenStreetMap para el mapa en detalle
+        var openStreetMapLayer = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
             maxZoom: 19,
         }).addTo(map);
+
+        // Crear una capa para las banderas a un zoom bajo
+        var usaFlagLayer = L.imageOverlay('https://upload.wikimedia.org/wikipedia/commons/a/a4/Flag_of_the_United_States.svg', 
+            [[20, -130], [50, -60]], {
+                opacity: 0.6, 
+                interactive: true
+        });
+
+        // Función para controlar la visibilidad de la bandera según el nivel de zoom
+        map.on('zoomend', function() {
+            var zoomLevel = map.getZoom();
+            
+            if (zoomLevel <= 5) { // Zoom alejado
+                usaFlagLayer.addTo(map);
+            } else { // Zoom cercano, mostrar solo detalles
+                map.removeLayer(usaFlagLayer);
+            }
+        });
+
+        // Iniciar la bandera visible cuando el mapa se carga a un zoom bajo
+        if (map.getZoom() <= 5) {
+            usaFlagLayer.addTo(map);
+        }
 
         // Obtener ubicación en tiempo real del usuario
         if (navigator.geolocation) {
