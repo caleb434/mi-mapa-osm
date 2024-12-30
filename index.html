@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Mapa Interactivo con Bandera</title>
+    <title>Mapa Interactivo sin Bandera</title>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.3/dist/leaflet.css" />
@@ -22,16 +22,6 @@
         L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
             maxZoom: 19,
         }).addTo(map);
-
-        // Coordenadas de la esquina noroeste y sureste de los EE.UU. (para definir el área de la bandera)
-        var bounds = [[24.396308, -125.0], [49.384358, -66.93457]]; // Límites de EE. UU. (aproximadamente)
-
-        // Imagen de la bandera de los EE. UU. y la capa de la bandera
-        var imageUrl = 'https://upload.wikimedia.org/wikipedia/commons/a/a4/Flag_of_the_United_States.svg'; // URL de la bandera
-        var imageBounds = bounds; // Coordenadas para la bandera (se ajusta a los límites del país)
-
-        // Colocar la bandera como overlay
-        L.imageOverlay(imageUrl, imageBounds).addTo(map);
 
         // Obtener la ubicación en tiempo real del usuario
         if (navigator.geolocation) {
