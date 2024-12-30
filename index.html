@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Mapa Interactivo con Bandera</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.3/dist/leaflet.css" />
     <script src="https://unpkg.com/leaflet@1.9.3/dist/leaflet.js"></script>
     <style>
@@ -16,38 +16,24 @@
 <body>
     <div id="map"></div>
     <script>
-        // Crear el mapa centrado en las coordenadas de EE. UU.
-        var map = L.map('map').setView([37.0902, -95.7129], 4); // Coordenadas de EE. UU.
+        var map = L.map('map').setView([37.0902, -95.7129], 4); // Coordenadas centradas en EE.UU. y nivel de zoom
 
-        // Cargar las baldosas de OpenStreetMap para el mapa en detalle
-        var openStreetMapLayer = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        // Capa de mapa con OpenStreetMap
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
             maxZoom: 19,
         }).addTo(map);
 
-        // Crear una capa para las banderas a un zoom bajo
-        var usaFlagLayer = L.imageOverlay('https://upload.wikimedia.org/wikipedia/commons/a/a4/Flag_of_the_United_States.svg', 
-            [[20, -130], [50, -60]], {
-                opacity: 0.6, 
-                interactive: true
-        });
+        // Coordenadas de la esquina noroeste y sureste de los EE.UU. (para definir el área de la bandera)
+        var bounds = [[24.396308, -125.0], [49.384358, -66.93457]]; // Límites de EE. UU. (aproximadamente)
 
-        // Función para controlar la visibilidad de la bandera según el nivel de zoom
-        map.on('zoomend', function() {
-            var zoomLevel = map.getZoom();
-            
-            if (zoomLevel <= 5) { // Zoom alejado
-                usaFlagLayer.addTo(map);
-            } else { // Zoom cercano, mostrar solo detalles
-                map.removeLayer(usaFlagLayer);
-            }
-        });
+        // Imagen de la bandera de los EE. UU. y la capa de la bandera
+        var imageUrl = 'https://upload.wikimedia.org/wikipedia/commons/a/a4/Flag_of_the_United_States.svg'; // URL de la bandera
+        var imageBounds = bounds; // Coordenadas para la bandera (se ajusta a los límites del país)
 
-        // Iniciar la bandera visible cuando el mapa se carga a un zoom bajo
-        if (map.getZoom() <= 5) {
-            usaFlagLayer.addTo(map);
-        }
+        // Colocar la bandera como overlay
+        L.imageOverlay(imageUrl, imageBounds).addTo(map);
 
-        // Obtener ubicación en tiempo real del usuario
+        // Obtener la ubicación en tiempo real del usuario
         if (navigator.geolocation) {
             navigator.geolocation.getCurrentPosition(function(position) {
                 var lat = position.coords.latitude;
