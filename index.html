@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Mapa Interactivo sin Bandera</title>
+    <title>Mapa Interactivo</title>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.3/dist/leaflet.css" />
@@ -16,14 +16,12 @@
 <body>
     <div id="map"></div>
     <script>
-        var map = L.map('map').setView([37.0902, -95.7129], 4); // Coordenadas centradas en EE.UU. y nivel de zoom
-
-        // Capa de mapa con OpenStreetMap
+        var map = L.map('map').setView([0, 0], 2); // Coordenadas iniciales (latitud, longitud) y zoom
         L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
             maxZoom: 19,
         }).addTo(map);
 
-        // Obtener la ubicación en tiempo real del usuario
+        // Obtener ubicación en tiempo real del usuario
         if (navigator.geolocation) {
             navigator.geolocation.getCurrentPosition(function(position) {
                 var lat = position.coords.latitude;
