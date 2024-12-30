@@ -20,6 +20,24 @@
         L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
             maxZoom: 19,
         }).addTo(map);
+
+        // Obtener ubicación en tiempo real del usuario
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(function(position) {
+                var lat = position.coords.latitude;
+                var lon = position.coords.longitude;
+
+                // Centrar el mapa en la ubicación del usuario
+                map.setView([lat, lon], 13);
+                
+                // Agregar marcador en la ubicación
+                L.marker([lat, lon]).addTo(map)
+                    .bindPopup("¡Estás aquí!")
+                    .openPopup();
+            });
+        } else {
+            alert("La geolocalización no está soportada en este navegador.");
+        }
     </script>
 </body>
 </html>
